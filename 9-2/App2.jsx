@@ -1,11 +1,12 @@
-import React, {useState, useEffect } from "react";
-import './App.css';
+import React, { useState, useEffect } from "react";
+import './App2.css';
 
-const serverURL = "http://localhost:65010/users";
+const serverURL = "http://localhost:65020/users";
 
-function App() {
+function App2() {
 
   const [userData, setUserData] = useState(null);
+  const [Err, setErr] = useState(null);
 
   const getUserData = () => {
     fetch(serverURL)
@@ -34,6 +35,20 @@ function App() {
     .then(getUserData())
   }
 
+  const onSubmitHandler2 = (event) => {
+    event.preventDefault();
+    const name = event.target.name.value;
+    const id = event.target.id.value;
+    for(var i = 0; i < userData.length; i++) {
+      if(name == userData[i].name && id == userData[i].id) {
+          setErr("회원으로 확인되었습니다.");
+          break;
+      } else {
+          setErr("그런 회원은 없습니다.");
+      }
+  }
+  }
+
   return (
     <>
       <div>
@@ -46,6 +61,18 @@ function App() {
         </form>
       </div>
       <p> </p>
+
+      <div>
+        <h2> 회원확인 </h2>
+        <form onSubmit={onSubmitHandler2}>
+          <input type="text" name="name" placeholder="이름 "/>
+          <input type="text" name="id" placeholder="id "/>
+          <button type="submit"> 확인 </button>
+        </form>
+        <p style={{color:"red"}}>{ Err }</p>
+      </div>
+      <p> </p>
+      
       <div>
         <h2> 회원 목록</h2>
         <ol>
@@ -62,4 +89,4 @@ function App() {
   );
 }
 
-export default App;
+export default App2;
